@@ -21,4 +21,12 @@ public class Player : MonoBehaviour
         float y = Input.GetAxis("Vertical");
         rb.velocity = new Vector2(x, y) * moveSpeed;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Guard")
+        {
+            print(collision.gameObject.name);
+        }
+    }
 }
