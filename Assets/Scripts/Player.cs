@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
 
     public Arrow arrowPrefab;
     private int arrowNum;
+    private bool arrowCharging;
+    private float chargeStart;
     private float lastShoot;
 
     // Start is called before the first frame update
@@ -31,8 +33,15 @@ public class Player : MonoBehaviour
         Vector3 mousePos = Input.mousePosition;
         Vector3 mouseDir = Vector3.Normalize(mousePos - transform.position);
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
+            arrowCharging = true;
+            chargeStart = Time.time;
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+
             shoot(mouseDir);
         }
     }
@@ -52,7 +61,7 @@ public class Player : MonoBehaviour
         if (Time.time - lastShoot > 1)
         {
             Arrow a = Instantiate<Arrow>(arrowPrefab, this.transform.position, Quaternion.identity);
-            a.Init(direction);
+            a.Init(direction, Time.time - chargeStart);
             lastShoot = Time.time;
             arrowNum--;
         }
