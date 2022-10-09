@@ -9,18 +9,21 @@ public class Arrow : MonoBehaviour
     private float floatDistance;
     private float speed;
 
-    private const float MAX_DISTANCE = 50f;
+    // constants
+    private const float SPEED = 10f;
+    private const float MAX_DISTANCE = 18f;
     private const float MAX_CHARGE_TIME = 2f;
 
     // Start is called before the first frame update
     void Start()
     {
-        speed = 5f;
+        speed = SPEED;
     }
 
     public void Init(Vector3 direction, float chargeTime)
     {
         this.direction = direction;
+        chargeTime = chargeTime > 2 ? 2f : chargeTime;
         distance = chargeTime / MAX_CHARGE_TIME * MAX_DISTANCE;
     }
 
@@ -30,7 +33,7 @@ public class Arrow : MonoBehaviour
         if (distance > floatDistance)
         {
             this.transform.Translate(speed * Time.deltaTime * direction);
-            floatDistance += 1;
+            floatDistance += speed * Time.deltaTime;
         }
     }
 }

@@ -811,7 +811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b43e785decb79d448746b6642d86ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrow: {fileID: 6261424053731869615}
+  arrowPrefab: {fileID: 6261424053731869615}
 --- !u!50 &1709622507
 Rigidbody2D:
   serializedVersion: 4

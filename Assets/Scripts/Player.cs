@@ -33,15 +33,22 @@ public class Player : MonoBehaviour
         Vector3 mousePos = Input.mousePosition;
         Vector3 mouseDir = Vector3.Normalize(mousePos - transform.position);
 
+        // for Debug, refill arrow
+        if (Input.GetKey(KeyCode.R))
+        {
+            arrowNum += 3;
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             arrowCharging = true;
             chargeStart = Time.time;
         }
 
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space)
+         || (Time.time - chargeStart > 2 && arrowCharging) )
         {
-
+            arrowCharging = false;
             shoot(mouseDir);
         }
     }
