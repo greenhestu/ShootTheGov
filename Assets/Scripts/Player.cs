@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -34,7 +36,16 @@ public class Player : MonoBehaviour
         Vector3 mouseDir = Vector3.Normalize(mousePos - transform.position);
 
         // for Debug, refill arrow
-        if (Input.GetKey(KeyCode.R))
+        if (Time.timeScale == 0)
+        {
+            if (Input.GetKey(KeyCode.R))
+            {
+                SceneManager.LoadScene(0);
+                Time.timeScale = 1f;
+            }
+        }
+
+        if (Input.GetKey(KeyCode.Z))
         {
             arrowNum += 3;
         }
@@ -55,10 +66,17 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Guard")
+        if (collision.gameObject.CompareTag("Guard"))
         {
-            print(collision.gameObject.name);
+            Die(collision.gameObject.name);
         }
+    }
+
+    private void Die(string enemy)
+    {
+        Debug.Assert(Time.timeScale != 0);
+        Time.timeScale = 0;
+        print(string.Format("{0} killed you\nPress 'R' to restart", enemy));
     }
 
     private void shoot(Vector3 direction)
