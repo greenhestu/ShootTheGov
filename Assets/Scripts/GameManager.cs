@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class GameManager
 {
     private static GameManager instance;
@@ -17,6 +19,13 @@ public class GameManager
 
     public void WinStage()
     {
+        var pWinUI = Resources.Load<GameObject>("Prefabs/WinUI");
+        Object.Instantiate(pWinUI);
+    }
+
+    public void NextStage()
+    {
+        Debug.Log("New Stage");
         stage += 1;
     }
 }
