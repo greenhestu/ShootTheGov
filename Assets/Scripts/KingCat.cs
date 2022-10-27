@@ -18,6 +18,6 @@ public class KingCat : MonoBehaviour
 
     public void Die()
     {
-        
+        Destroy(gameObject);
     }
 }

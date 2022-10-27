@@ -23,8 +23,12 @@ public class Arrow : MonoBehaviour
     public void Init(Vector3 direction, float chargeTime)
     {
         this.direction = direction;
-        chargeTime = chargeTime > 2 ? 2f : chargeTime;
+        chargeTime = chargeTime > MAX_CHARGE_TIME ? MAX_CHARGE_TIME : chargeTime;
         distance = chargeTime / MAX_CHARGE_TIME * MAX_DISTANCE;
+
+        float mouseDirEuler = Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x);
+        // mouseDirEuler *= direction.y > 0 ? 1 : -1;
+        transform.Rotate(0, 0, mouseDirEuler - 45);
     }
 
     // Update is called once per frame
@@ -32,7 +36,7 @@ public class Arrow : MonoBehaviour
     {
         if (distance > floatDistance)
         {
-            this.transform.Translate(speed * Time.deltaTime * direction);
+            transform.Translate(speed * Time.deltaTime * direction, Space.World);
             floatDistance += speed * Time.deltaTime;
         }
     }
