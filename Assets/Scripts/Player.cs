@@ -33,7 +33,11 @@ public class Player : MonoBehaviour
         rb.velocity = new Vector2(x, y) * moveSpeed;
 
         Vector3 mousePos = Input.mousePosition;
-        Vector3 mouseDir = Vector3.Normalize(mousePos - transform.position);
+        mousePos.z = 0f;
+
+        Vector3 mouseDir = Camera.main.ScreenToWorldPoint(mousePos);
+        mouseDir.z = 0;
+        mouseDir = Vector3.Normalize(mouseDir - transform.position);
 
         // for Debug, refill arrow
         if (Time.timeScale == 0)
@@ -60,7 +64,7 @@ public class Player : MonoBehaviour
          || (Time.time - chargeStart > 2 && arrowCharging) )
         {
             arrowCharging = false;
-            shoot(mouseDir);
+            Shoot(mouseDir);
         }
     }
 
@@ -79,7 +83,7 @@ public class Player : MonoBehaviour
         print(string.Format("{0} killed you\nPress 'R' to restart", enemy));
     }
 
-    private void shoot(Vector3 direction)
+    private void Shoot(Vector3 direction)
     {
         if (arrowNum == 0) return;
 

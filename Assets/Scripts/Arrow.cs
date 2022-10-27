@@ -37,10 +37,15 @@ public class Arrow : MonoBehaviour
         }
     }
 
-    private void OntriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        KingCat king = other.gameObject.GetComponent<KingCat>();
-        king.Die();
-        GameManager.Instance.WinStage();
+        Debug.Log(other);
+
+        if (other.gameObject.TryGetComponent(out KingCat king))
+        {
+            Debug.Log("Stage Win");
+            king.Die();
+            GameManager.Instance.WinStage();
+        }
     }
 }
