@@ -36,4 +36,9 @@ public class Arrow : MonoBehaviour
             floatDistance += speed * Time.deltaTime;
         }
     }
+
+    private void OntriggerEnter(Collider other)
+    {
+
+    }
 }
