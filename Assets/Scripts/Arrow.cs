@@ -39,6 +39,8 @@ public class Arrow : MonoBehaviour
 
     private void OntriggerEnter(Collider other)
     {
-
+        KingCat king = other.gameObject.GetComponent<KingCat>();
+        king.Die();
+        GameManager.Instance.WinStage();
     }
 }
