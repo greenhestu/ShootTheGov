@@ -44,6 +44,7 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.R))
             {
+                Guard.ResetCounter();
                 SceneManager.LoadScene(0);
                 Time.timeScale = 1f;
             }

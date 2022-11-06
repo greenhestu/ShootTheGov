@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEditor.UI;
 using JetBrains.Annotations;
 using static UnityEngine.EventSystems.EventTrigger;
+using static UnityEngine.GraphicsBuffer;
 
 [System.Serializable]
 public struct Point
@@ -17,6 +18,11 @@ public struct Point
     {
         this.x = x;
         this.y = y;
+    }
+
+    public bool Equals(Point p)
+    {
+        return this.x == p.x && this.y == p.y;
     }
 }
 
@@ -39,8 +45,9 @@ public class Guard : MonoBehaviour
 {
     static int counter = 0;
     public Stats stats;
+    public bool isLoop = false;
 
-    // just debug purpose
+    // just debugging purpose
     void Save(string file)
     {
         string path = Path.Combine(Application.dataPath, "Resources/", file);
@@ -61,6 +68,10 @@ public class Guard : MonoBehaviour
         Debug.Log("success");
     }
 
+    public static void ResetCounter()
+    {
+        counter = 0;
+    }
     void Load(string file)
     {
         string path = Path.Combine(Application.dataPath, "Resources/", file);
@@ -69,6 +80,10 @@ public class Guard : MonoBehaviour
         Guards guards = JsonUtility.FromJson<Guards>(loadJson);
         stats = guards.member[counter];
 
+        if (stats.path[0].Equals(stats.path[stats.path.Count-1]))
+            isLoop = true;
+
+        counter += 1;
         if (loadJson == null)
         {
             Debug.Log("load failed");
@@ -84,12 +99,14 @@ public class Guard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        counter += 1;
         // this.Save("world1.json");
         this.Load("world1.json");
         Point start = stats.path[0];
-        transform.position = new Vector3(start.x, start.y, 0);
-
+        Point next =  stats.path[1];
+        Vector3 sp = new Vector3(start.x, start.y, 0);
+        Vector3 np = new Vector3(next.x, next.y, 0);
+        transform.position = sp;
+        transform.up = np-sp;
     }
 
     // Update is called once per frame
