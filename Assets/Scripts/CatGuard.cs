@@ -69,8 +69,8 @@ public class CatGuard : Guard
         Vector3 direction = (dest - transform.position).normalized;
 
         Vector3 axis;
-        Vector3 cross = Vector3.Cross(transform.up, direction);
-        Debug.Log(string.Format("x: {0}, y: {1}, z: {2}", cross.x, cross.y, cross.z));
+        Vector3 cross = Vector3.Cross(transform.up, dest);
+        //Debug.Log(string.Format("x: {0}, y: {1}, z: {2}", cross.x, cross.y, cross.z));
         if (cross.z >= 0)
             axis = new Vector3(0, 0, 1);
         else
