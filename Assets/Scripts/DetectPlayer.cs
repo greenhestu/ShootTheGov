@@ -5,7 +5,7 @@ using UnityEngine;
 public class DetectPlayer : MonoBehaviour
 {
     //시선추적 해야 함
-    CircleCollider2D sight; 
+    CircleCollider2D sight;
 
     // Start is called before the first frame update
     void Start()
@@ -17,8 +17,8 @@ public class DetectPlayer : MonoBehaviour
     {
         if (collider.CompareTag("Player"))
         {
-            if(IsVisible(GameObject.Find("Player").transform.position, 60f))
-                Debug.Log("Player is found!");
+            if (IsVisible(GameObject.Find("Player").transform.position, 60f))
+                gameObject.GetComponent<Guard>().Mad(collider.gameObject.GetComponent<Player>());
         }
     }
 

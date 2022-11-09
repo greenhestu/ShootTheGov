@@ -6,7 +6,7 @@ public class CatGuard : Guard
 {
     private int cursor = 0; // current step of path
     private bool isBackward = false; // are we going back the path?
-    private bool isDelay = false; // are we rotating?
+    private bool isRotating = false; // are we rotating?
 
     void NextCursor()
     {
@@ -37,35 +37,49 @@ public class CatGuard : Guard
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(string.Format("x: {0}, y: {1}, z: {2}", transform.rotation.x, transform.rotation.y, transform.rotation.z));
-       
+
         if (isAngry)
         {
+            dest = chasing.transform.position;
+
+            // too close
+            if (Vector3.Distance(dest, transform.position) < 0.01f)
+            {
+                if (!isAngry)
+                {
+                    NextCursor();
+                    StartCoroutine(rotation(stats.path[cursor]));
+                }
+            }
+
+            // angle fault
             Vector3 playerDir = (dest - transform.position).normalized;
-            if (Vector3.Dot(playerDir, transform.up) < 0.9)
+            if (Vector3.Dot(playerDir, transform.up.normalized) < 0.9)
             {
                 StartCoroutine(rotation(stats.path[cursor]));
             }
         }
 
-
-        if (!isDelay) // move forward
+        else
         {
-            float step = stats.speed * Time.deltaTime;
+            if (isRotating) return;
 
+            // too close
             if (Vector3.Distance(dest, transform.position) < 0.01f)
             {
                 NextCursor();
                 StartCoroutine(rotation(stats.path[cursor]));
             }
-            else
-                transform.position = Vector3.MoveTowards(transform.position, dest, step);
         }
+
+        // chase
+        float step = stats.speed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, dest, step);
     }
 
     IEnumerator rotation(Point target)
     {
-        isDelay = true;
+        isRotating = true;
         Vector3 direction = (dest - transform.position).normalized;
 
         Vector3 axis;
@@ -76,11 +90,13 @@ public class CatGuard : Guard
         else
             axis = new Vector3(0, 0, -1);
 
-        while(Vector3.Angle(transform.up, direction) > 0.5) //0.5도 보다 작아지면
+        while (Vector3.Angle(transform.up, direction) > 10) //5도 보다 작아지면
         {
             transform.Rotate(axis * Time.deltaTime * stats.rotSpeed);
             yield return null;
         }
-        isDelay = false;
+
+        transform.Rotate(axis * Vector3.Angle(transform.up, direction));
+        isRotating = false;
     }
 }

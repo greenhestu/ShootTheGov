@@ -49,6 +49,7 @@ public class Guard : MonoBehaviour
     public bool isLoop = false; // is guard looping circular path?
 
     protected bool isAngry = false;
+    protected Player chasing;
 
     protected Vector3 dest;
 
@@ -115,8 +116,6 @@ public class Guard : MonoBehaviour
         Vector3 np = new Vector3(next.x, next.y, 0);
         transform.position = sp;
         transform.up = np-sp;
-
-        Mad(); // for debug, must delete
     }
 
     // Update is called once per frame
@@ -125,9 +124,14 @@ public class Guard : MonoBehaviour
         
     }
 
-    private void Mad() // 나중에 시선 처리할 때 적절하게 호출해주세요
+    // called when guard found player.
+    public void Mad(Player player)
     {
-        isAngry = true;
-        dest = new Vector3(0, 0, 0); // 충돌한 플레이어의 좌표로 바꿀 것
+        if (!isAngry)
+        {
+            isAngry = true;
+            chasing = player;
+            dest = player.transform.position;
+        }
     }
 }
