@@ -26,6 +26,7 @@ public struct Point
     }
 }
 
+// Unique status of each guard.
 [System.Serializable]
 public struct Stats
 {
@@ -43,9 +44,13 @@ public struct Guards
 
 public class Guard : MonoBehaviour
 {
-    static int counter = 0;
+    static int counter = 0; // # of guards
     public Stats stats;
-    public bool isLoop = false;
+    public bool isLoop = false; // is guard looping circular path?
+
+    protected bool isAngry = false;
+
+    protected Vector3 dest;
 
     // just debugging purpose
     void Save(string file)
@@ -72,18 +77,22 @@ public class Guard : MonoBehaviour
     {
         counter = 0;
     }
+
+    // Loads guard path data
     void Load(string file)
     {
         string path = Path.Combine(Application.dataPath, "Resources/", file);
-
         string loadJson = File.ReadAllText(path);
         Guards guards = JsonUtility.FromJson<Guards>(loadJson);
         stats = guards.member[counter];
+        Debug.Log(stats);
 
-        if (stats.path[0].Equals(stats.path[stats.path.Count-1]))
+        // if path is circular
+        if (stats.path[0].Equals(stats.path[stats.path.Count - 1]))
             isLoop = true;
 
         counter += 1;
+
         if (loadJson == null)
         {
             Debug.Log("load failed");
@@ -95,9 +104,8 @@ public class Guard : MonoBehaviour
     }
 
 
-
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         // this.Save("world1.json");
         this.Load("world1.json");
@@ -107,11 +115,19 @@ public class Guard : MonoBehaviour
         Vector3 np = new Vector3(next.x, next.y, 0);
         transform.position = sp;
         transform.up = np-sp;
+
+        Mad(); // for debug, must delete
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void Mad() // 나중에 시선 처리할 때 적절하게 호출해주세요
+    {
+        isAngry = true;
+        dest = new Vector3(0, 0, 0); // 충돌한 플레이어의 좌표로 바꿀 것
     }
 }

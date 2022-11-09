@@ -43,8 +43,6 @@ public class Arrow : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other);
-
         if (other.gameObject.TryGetComponent(out KingCat king))
         {
             Debug.Log("Stage Win");
