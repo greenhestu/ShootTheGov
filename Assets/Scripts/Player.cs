@@ -8,12 +8,15 @@ public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
     private float moveSpeed;
+    private SpriteRenderer spriteRenderer;
+    public Sprite[] sprite = new Sprite[4]; // < v ^ >
 
     public Arrow arrowPrefab;
     private int arrowNum;
     private bool arrowCharging;
     private float chargeStart;
     private float lastShoot;
+
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +26,7 @@ public class Player : MonoBehaviour
 
         arrowNum = 3;
         lastShoot = Time.time;
+        spriteRenderer = gameObject.GetComponentInParent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -30,6 +34,12 @@ public class Player : MonoBehaviour
     {
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
+        if (x != 0 || y != 0)
+            if (Mathf.Abs(x) < Mathf.Abs(y))
+                spriteRenderer.sprite = (y > 0) ? sprite[2] : sprite[1];
+            else
+                spriteRenderer.sprite = (x > 0) ? sprite[3] : sprite[0];
+
         rb.velocity = new Vector2(x, y) * moveSpeed;
 
         Vector3 mousePos = Input.mousePosition;
@@ -69,11 +79,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collision.gameObject.CompareTag("Guard"))
+        if (collider.CompareTag("Guard"))
         {
-            Die(collision.gameObject.name);
+            if(collider.GetType() == typeof(BoxCollider2D))
+                Die(collider.gameObject.name);
         }
     }
 

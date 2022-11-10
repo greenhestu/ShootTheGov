@@ -1,7 +1,7 @@
 {
     "member": [
         {
-            "speed": 8.0,
+            "speed": 4.0,
             "rotSpeed": 200.0,
             "path": [
                 {

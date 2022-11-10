@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class CatGuard : Guard
@@ -7,8 +8,7 @@ public class CatGuard : Guard
     private int cursor = 0; // current step of path
     private bool isBackward = false; // are we going back the path?
     private bool isRotating = false; // are we rotating?
-
-    void NextCursor()
+    void NextCursor() //Lookup next path
     {
         int nextCur = cursor;
 
@@ -77,20 +77,20 @@ public class CatGuard : Guard
         transform.position = Vector3.MoveTowards(transform.position, dest, step);
     }
 
-    IEnumerator rotation(Point target)
+    IEnumerator rotation(Point target) // rotate in place
     {
         isRotating = true;
         Vector3 direction = (dest - transform.position).normalized;
 
         Vector3 axis;
-        Vector3 cross = Vector3.Cross(transform.up, dest);
+        Vector3 cross = Vector3.Cross(transform.up, direction);
         //Debug.Log(string.Format("x: {0}, y: {1}, z: {2}", cross.x, cross.y, cross.z));
         if (cross.z >= 0)
             axis = new Vector3(0, 0, 1);
         else
             axis = new Vector3(0, 0, -1);
 
-        while (Vector3.Angle(transform.up, direction) > 10) //5도 보다 작아지면
+        while (Vector3.Cross(transform.up, direction).z * cross.z >= 0)
         {
             transform.Rotate(axis * Time.deltaTime * stats.rotSpeed);
             yield return null;
@@ -98,5 +98,28 @@ public class CatGuard : Guard
 
         transform.Rotate(axis * Vector3.Angle(transform.up, direction));
         isRotating = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Handles.color = arcColor;
+        Handles.DrawSolidArc(transform.position, Vector3.forward, transform.up, sightAngle / 2, sightRadius);
+        Handles.DrawSolidArc(transform.position, Vector3.forward, transform.up, -sightAngle / 2, sightRadius);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.CompareTag("Wall"))
+        {
+            stats.speed *= slowRatio;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.CompareTag("Wall"))
+        {
+            stats.speed *= 1/slowRatio;
+        }
     }
 }

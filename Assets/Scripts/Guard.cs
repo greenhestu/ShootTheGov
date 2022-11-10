@@ -46,6 +46,10 @@ public class Guard : MonoBehaviour
 {
     static int counter = 0; // # of guards
     public Stats stats;
+    public int sightAngle = 10;
+    public int sightRadius = 5;
+    protected float slowRatio = 0.5f;
+    protected Color arcColor = new Color(1f, 0f, 0f, 0.1f); // red
     public bool isLoop = false; // is guard looping circular path?
 
     protected bool isAngry = false;
@@ -132,6 +136,7 @@ public class Guard : MonoBehaviour
             isAngry = true;
             chasing = player;
             dest = player.transform.position;
+            arcColor = new Color(0f, 0f, 0f, 0f);
         }
     }
 }

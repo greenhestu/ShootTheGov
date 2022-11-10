@@ -28,7 +28,7 @@ public class Arrow : MonoBehaviour
 
         float mouseDirEuler = Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x);
         // mouseDirEuler *= direction.y > 0 ? 1 : -1;
-        transform.Rotate(0, 0, mouseDirEuler - 45);
+        transform.Rotate(0, 0, mouseDirEuler);
     }
 
     // Update is called once per frame
@@ -48,6 +48,10 @@ public class Arrow : MonoBehaviour
             Debug.Log("Stage Win");
             king.Die();
             GameManager.Instance.WinStage();
+        }
+        else if (other.gameObject.CompareTag("Wall"))
+        {
+            speed = 0;
         }
     }
 }

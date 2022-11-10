@@ -6,18 +6,20 @@ public class DetectPlayer : MonoBehaviour
 {
     //시선추적 해야 함
     CircleCollider2D sight;
+    Guard guard;
 
     // Start is called before the first frame update
     void Start()
     {
+        guard = gameObject.GetComponent<Guard>();
         sight = gameObject.GetComponent<CircleCollider2D>();
-        sight.radius = 5;
+        sight.radius = guard.sightRadius;
     }
     private void OnTriggerStay2D(Collider2D collider)
     {
         if (collider.CompareTag("Player"))
         {
-            if (IsVisible(GameObject.Find("Player").transform.position, 60f))
+            if (IsVisible(GameObject.Find("Player").transform.position, guard.sightAngle))
                 gameObject.GetComponent<Guard>().Mad(collider.gameObject.GetComponent<Player>());
         }
     }
