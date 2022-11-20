@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -104,7 +105,13 @@ public class Player : MonoBehaviour
             Arrow a = Instantiate<Arrow>(arrowPrefab, this.transform.position, Quaternion.identity);
             a.Init(direction, Time.time - chargeStart);
             lastShoot = Time.time;
+
+            // not intelligent
             arrowNum--;
+            GameObject arrowNumUI = GameObject.Find("ArrowNum");
+            Text t = arrowNumUI.GetComponent<Text>();
+            Debug.Log(t);
+            t.text = arrowNum.ToString();
         }
     }
 }
