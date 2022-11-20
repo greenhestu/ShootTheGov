@@ -10,9 +10,10 @@ public class CatGuard : Guard
     private bool isRotating = false; // are we rotating?
     void NextCursor() //Lookup next path
     {
+        int length = stats.path.Count;
         int nextCur = cursor;
 
-        if (nextCur == stats.path.Count - 1)
+        if (nextCur == length - 1)
         {
             if (isLoop)
                 nextCur = 0;
@@ -31,7 +32,10 @@ public class CatGuard : Guard
     protected override void Start()
     {
         base.Start();
-        NextCursor();
+        if (!isFixed) NextCursor();
+
+        float trans = Mathf.Max(transform.localScale.x, transform.localScale.y);
+        gameObject.GetComponent<DetectPlayer>().setRadius(stats.sRadius/trans, stats.sAngle);
     }
 
     // Update is called once per frame
@@ -56,10 +60,14 @@ public class CatGuard : Guard
             Vector3 playerDir = (dest - transform.position).normalized;
             if (Vector3.Dot(playerDir, transform.up.normalized) < 0.9)
             {
-                StartCoroutine(rotation(stats.path[cursor]));
+                transform.Rotate(transform.forward * Vector3.Angle(transform.up, playerDir));
             }
         }
-
+        else if (isFixed) // rotating at start point
+        {
+            transform.Rotate(Vector3.forward * Time.deltaTime * stats.rotSpeed);
+            return;
+        }
         else
         {
             if (isRotating) return;
@@ -81,20 +89,20 @@ public class CatGuard : Guard
     {
         isRotating = true;
         Vector3 direction = (dest - transform.position).normalized;
-
         Vector3 axis;
         Vector3 cross = Vector3.Cross(transform.up, direction);
-        //Debug.Log(string.Format("x: {0}, y: {1}, z: {2}", cross.x, cross.y, cross.z));
-        if (cross.z >= 0)
+        //Debug.Log(string.Format("cross x: {0}, y: {1}, z: {2}", cross.x, cross.y, cross.z));
+        if (cross.z > 0)
             axis = new Vector3(0, 0, 1);
         else
             axis = new Vector3(0, 0, -1);
 
-        while (Vector3.Cross(transform.up, direction).z * cross.z >= 0)
+        while (Vector3.Cross(transform.up, direction).z * axis.z >= 0 || Vector3.Dot(transform.up, direction) < 0) 
         {
-            transform.Rotate(axis * Time.deltaTime * stats.rotSpeed);
+            Vector3 rot = axis * Time.deltaTime * stats.rotSpeed;
+            transform.Rotate(axis);
             yield return null;
-        }
+        } 
 
         transform.Rotate(axis * Vector3.Angle(transform.up, direction));
         isRotating = false;
@@ -103,8 +111,8 @@ public class CatGuard : Guard
     private void OnDrawGizmos()
     {
         Handles.color = arcColor;
-        Handles.DrawSolidArc(transform.position, Vector3.forward, transform.up, sightAngle / 2, sightRadius);
-        Handles.DrawSolidArc(transform.position, Vector3.forward, transform.up, -sightAngle / 2, sightRadius);
+        Handles.DrawSolidArc(transform.position, Vector3.forward, transform.up, stats.sAngle / 2, stats.sRadius);
+        Handles.DrawSolidArc(transform.position, Vector3.forward, transform.up, -stats.sAngle / 2, stats.sRadius);
     }
 
     private void OnTriggerEnter2D(Collider2D collider)

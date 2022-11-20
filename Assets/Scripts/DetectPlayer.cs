@@ -5,21 +5,26 @@ using UnityEngine;
 public class DetectPlayer : MonoBehaviour
 {
     //시선추적 해야 함
-    CircleCollider2D sight;
-    Guard guard;
+    float radius = 0f;
+    float angle = 0f;
 
     // Start is called before the first frame update
     void Start()
     {
-        guard = gameObject.GetComponent<Guard>();
-        sight = gameObject.GetComponent<CircleCollider2D>();
-        sight.radius = guard.sightRadius;
     }
+    public void setRadius(float radius, float angle)
+    {
+        this.radius = radius;  
+        this.angle = angle;
+        CircleCollider2D sight = gameObject.GetComponent<CircleCollider2D>();
+        sight.radius = this.radius;
+    }
+
     private void OnTriggerStay2D(Collider2D collider)
     {
         if (collider.CompareTag("Player"))
         {
-            if (IsVisible(GameObject.Find("Player").transform.position, guard.sightAngle))
+            if (IsVisible(GameObject.Find("Player").transform.position, angle))
                 gameObject.GetComponent<Guard>().Mad(collider.gameObject.GetComponent<Player>());
         }
     }

@@ -7,6 +7,7 @@ using UnityEditor.UI;
 using JetBrains.Annotations;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
+using UnityEditor.SceneTemplate;
 
 [System.Serializable]
 public struct Point
@@ -32,6 +33,9 @@ public struct Stats
 {
     public float speed;
     public float rotSpeed;
+    public bool isClockwise;
+    public float sAngle;
+    public float sRadius;
     public List<Point> path;
 }
 
@@ -46,11 +50,10 @@ public class Guard : MonoBehaviour
 {
     static int counter = 0; // # of guards
     public Stats stats;
-    public int sightAngle = 10;
-    public int sightRadius = 5;
     protected float slowRatio = 0.5f;
     protected Color arcColor = new Color(1f, 0f, 0f, 0.1f); // red
     public bool isLoop = false; // is guard looping circular path?
+    public bool isFixed = false;
 
     protected bool isAngry = false;
     protected Player chasing;
@@ -66,6 +69,9 @@ public class Guard : MonoBehaviour
         Stats stats;
         stats.speed = 3f;
         stats.rotSpeed = 90f;
+        stats.sAngle = 30f;
+        stats.sRadius = 3f;
+        stats.isClockwise = true;
         stats.path = new List<Point>();
         stats.path.Add(p);
         Guards guards;
@@ -90,11 +96,14 @@ public class Guard : MonoBehaviour
         string loadJson = File.ReadAllText(path);
         Guards guards = JsonUtility.FromJson<Guards>(loadJson);
         stats = guards.member[counter];
-        Debug.Log(stats);
 
         // if path is circular
         if (stats.path[0].Equals(stats.path[stats.path.Count - 1]))
             isLoop = true;
+
+        // if guard don't move
+        if (stats.path.Count <= 1)
+            isFixed = true;
 
         counter += 1;
 
@@ -115,11 +124,21 @@ public class Guard : MonoBehaviour
         // this.Save("world1.json");
         this.Load("world1.json");
         Point start = stats.path[0];
-        Point next =  stats.path[1];
         Vector3 sp = new Vector3(start.x, start.y, 0);
-        Vector3 np = new Vector3(next.x, next.y, 0);
         transform.position = sp;
-        transform.up = np-sp;
+
+        if (stats.path.Count <= 1) //rotating at start point
+        {
+            transform.up = Vector3.up;
+        }
+        else
+        {
+            Point next =  stats.path[1];
+            Vector3 np = new Vector3(next.x, next.y, 0);
+            Vector3 direction = np - sp;
+            float degree = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+            transform.Rotate(Vector3.back * degree);
+        }
     }
 
     // Update is called once per frame
