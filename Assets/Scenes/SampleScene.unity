@@ -252,10 +252,12 @@ MonoBehaviour:
   stats:
     speed: 0
     rotSpeed: 0
+    isClockwise: 0
+    sAngle: 0
+    sRadius: 0
     path: []
-  sightAngle: 10
-  sightRadius: 5
   isLoop: 0
+  isFixed: 0
 --- !u!114 &352454313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -516,10 +518,12 @@ MonoBehaviour:
   stats:
     speed: 0
     rotSpeed: 0
+    isClockwise: 0
+    sAngle: 0
+    sRadius: 0
     path: []
-  sightAngle: 10
-  sightRadius: 5
   isLoop: 0
+  isFixed: 0
 --- !u!114 &525843708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -779,6 +783,12 @@ CompositeCollider2D:
       - X: 0
         Y: 70000000
       - X: 0
+        Y: 100
+      - X: -41
+        Y: 100
+      - X: -100
+        Y: 41
+      - X: -100
         Y: 0
       - X: -10000000
         Y: 0
@@ -792,9 +802,9 @@ CompositeCollider2D:
         Y: -30000000
       - X: 30000000
         Y: -10000000
-      - X: 10000000
+      - X: 10000100
         Y: -10000000
-      - X: 10000000
+      - X: 10000100
         Y: 0
       - X: 30000000
         Y: 0
@@ -983,15 +993,15 @@ CompositeCollider2D:
       - {x: -9, y: 5.0000296}
       - {x: -8.99997, y: 7}
       - {x: 0, y: 6.9999704}
-      - {x: -0.0000294, y: 0}
+      - {x: -0.0000394, y: 0}
       - {x: -1, y: -0.000029300001}
       - {x: -0.99997073, y: -4}
       - {x: 1, y: -3.999971}
       - {x: 1.0000294, y: -3}
       - {x: 3, y: -2.999971}
       - {x: 2.999971, y: -1}
-      - {x: 1, y: -0.9999706}
-      - {x: 1.0000294, y: 0}
+      - {x: 1.00001, y: -0.9999706}
+      - {x: 1.0000395, y: 0}
       - {x: 3, y: 0.000029300001}
       - {x: 2.999971, y: 2}
       - {x: 1, y: 2.0000293}
@@ -1861,8 +1871,8 @@ Tilemap:
   - first: {x: 0, y: -1, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 15
-      m_TileSpriteIndex: 15
+      m_TileIndex: 0
+      m_TileSpriteIndex: 2
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -2590,7 +2600,7 @@ Tilemap:
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 5
+  - m_RefCount: 6
     m_Data: {fileID: 11400000, guid: 94f5978306df32744995a2ce68163ff7, type: 2}
   - m_RefCount: 3
     m_Data: {fileID: 11400000, guid: d3daeb444cb5ecd4183bad34cf5e2604, type: 2}
@@ -2620,7 +2630,7 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 2ec3926366c7c1c4c8062490b77fa297, type: 2}
   - m_RefCount: 38
     m_Data: {fileID: 11400000, guid: 7e06d71cf8907ee4f972832dfc7124e6, type: 2}
-  - m_RefCount: 4
+  - m_RefCount: 3
     m_Data: {fileID: 11400000, guid: 3ae773f13ce10f04c864c7ac91c96879, type: 2}
   - m_RefCount: 33
     m_Data: {fileID: 11400000, guid: 4320c6dd4e9e2a6499bd17d5ce1ef2d5, type: 2}
@@ -2653,7 +2663,7 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 3
     m_Data: {fileID: -8226039175015219914, guid: b2f900afec3478e45b6de643d58467e0, type: 3}
-  - m_RefCount: 5
+  - m_RefCount: 6
     m_Data: {fileID: 5637439146568203526, guid: b2f900afec3478e45b6de643d58467e0, type: 3}
   - m_RefCount: 2
     m_Data: {fileID: 535309813544537231, guid: b2f900afec3478e45b6de643d58467e0, type: 3}
@@ -2679,7 +2689,7 @@ Tilemap:
     m_Data: {fileID: -3425815941409129391, guid: b2f900afec3478e45b6de643d58467e0, type: 3}
   - m_RefCount: 38
     m_Data: {fileID: 2883511258056803758, guid: b2f900afec3478e45b6de643d58467e0, type: 3}
-  - m_RefCount: 4
+  - m_RefCount: 3
     m_Data: {fileID: -7459919205746074235, guid: b2f900afec3478e45b6de643d58467e0, type: 3}
   - m_RefCount: 33
     m_Data: {fileID: 8066038462719833684, guid: b2f900afec3478e45b6de643d58467e0, type: 3}
@@ -2877,10 +2887,12 @@ MonoBehaviour:
   stats:
     speed: 0
     rotSpeed: 0
+    isClockwise: 0
+    sAngle: 0
+    sRadius: 0
     path: []
-  sightAngle: 10
-  sightRadius: 5
   isLoop: 0
+  isFixed: 0
 --- !u!114 &969471855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3021,10 +3033,12 @@ MonoBehaviour:
   stats:
     speed: 0
     rotSpeed: 0
+    isClockwise: 0
+    sAngle: 0
+    sRadius: 0
     path: []
-  sightAngle: 10
-  sightRadius: 5
   isLoop: 0
+  isFixed: 0
 --- !u!61 &972315145
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3239,10 +3253,12 @@ MonoBehaviour:
   stats:
     speed: 0
     rotSpeed: 0
+    isClockwise: 0
+    sAngle: 0
+    sRadius: 0
     path: []
-  sightAngle: 10
-  sightRadius: 5
   isLoop: 0
+  isFixed: 0
 --- !u!114 &1078505395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4006,10 +4022,12 @@ MonoBehaviour:
   stats:
     speed: 0
     rotSpeed: 0
+    isClockwise: 0
+    sAngle: 0
+    sRadius: 0
     path: []
-  sightAngle: 10
-  sightRadius: 5
   isLoop: 0
+  isFixed: 0
 --- !u!114 &1139563372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4187,10 +4205,12 @@ MonoBehaviour:
   stats:
     speed: 0
     rotSpeed: 0
+    isClockwise: 0
+    sAngle: 0
+    sRadius: 0
     path: []
-  sightAngle: 10
-  sightRadius: 5
   isLoop: 0
+  isFixed: 0
 --- !u!114 &1404497701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7530,9 +7550,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1ab07b9cdbc575e4fa34d8e9079d5002, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 40b40993cd050ac4e9ee992ccb5e7462, type: 3}
   m_Color: {r: 0.9528302, g: 0.9528302, b: 0.9528302, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -7708,10 +7728,12 @@ MonoBehaviour:
   stats:
     speed: 0
     rotSpeed: 0
+    isClockwise: 0
+    sAngle: 0
+    sRadius: 0
     path: []
-  sightAngle: 10
-  sightRadius: 5
   isLoop: 0
+  isFixed: 0
 --- !u!114 &1736513707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7889,10 +7911,12 @@ MonoBehaviour:
   stats:
     speed: 0
     rotSpeed: 0
+    isClockwise: 0
+    sAngle: 0
+    sRadius: 0
     path: []
-  sightAngle: 10
-  sightRadius: 5
   isLoop: 0
+  isFixed: 0
 --- !u!114 &1854876912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8217,10 +8241,12 @@ MonoBehaviour:
   stats:
     speed: 0
     rotSpeed: 0
+    isClockwise: 0
+    sAngle: 0
+    sRadius: 0
     path: []
-  sightAngle: 10
-  sightRadius: 5
   isLoop: 0
+  isFixed: 0
 --- !u!114 &1999319529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8398,10 +8424,12 @@ MonoBehaviour:
   stats:
     speed: 0
     rotSpeed: 0
+    isClockwise: 0
+    sAngle: 0
+    sRadius: 0
     path: []
-  sightAngle: 10
-  sightRadius: 5
   isLoop: 0
+  isFixed: 0
 --- !u!114 &2102086079
 MonoBehaviour:
   m_ObjectHideFlags: 0
