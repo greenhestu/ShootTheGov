@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
     private float moveSpeed;
+    [SerializeField]
+    private bool isMoving;
+
     private SpriteRenderer spriteRenderer;
     public Sprite[] sprite = new Sprite[4]; // < v ^ >
 
@@ -33,16 +36,22 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // move
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
+        rb.velocity = new Vector2(x, y) * moveSpeed;
+
+        // sprite by direction
         if (x != 0 || y != 0)
             if (Mathf.Abs(x) < Mathf.Abs(y))
                 spriteRenderer.sprite = (y > 0) ? sprite[2] : sprite[1];
             else
                 spriteRenderer.sprite = (x > 0) ? sprite[3] : sprite[0];
 
-        rb.velocity = new Vector2(x, y) * moveSpeed;
+        // animation
+        isMoving = (x != 0 || y != 0);        
 
+        // mouse
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = 0f;
 
@@ -50,7 +59,7 @@ public class Player : MonoBehaviour
         mouseDir.z = 0;
         mouseDir = Vector3.Normalize(mouseDir - transform.position);
 
-        // for Debug, refill arrow
+        // for Debug, revive
         if (Time.timeScale == 0)
         {
             if (Input.GetKey(KeyCode.R))
@@ -61,11 +70,13 @@ public class Player : MonoBehaviour
             }
         }
 
+        // for Debug, refill arrow
         if (Input.GetKey(KeyCode.Z))
         {
             arrowNum += 3;
         }
 
+        // arrow shooting
         if (Input.GetKeyDown(KeyCode.Space))
         {
             arrowCharging = true;
