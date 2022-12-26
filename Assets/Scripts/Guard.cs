@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using UnityEngine;
-using UnityEditor.UI;
 using JetBrains.Annotations;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
-using UnityEditor.SceneTemplate;
 
 [System.Serializable]
 public struct Point
@@ -51,7 +49,6 @@ public class Guard : MonoBehaviour
     static int counter = 0; // # of guards
     public Stats stats;
     protected float slowRatio = 0.5f;
-    protected Color arcColor = new Color(1f, 0f, 0f, 0.1f); // red
     public bool isLoop = false; // is guard looping circular path?
     public bool isFixed = false;
 
@@ -155,7 +152,6 @@ public class Guard : MonoBehaviour
             isAngry = true;
             chasing = player;
             dest = player.transform.position;
-            arcColor = new Color(0f, 0f, 0f, 0f);
         }
     }
 }

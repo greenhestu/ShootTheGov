@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private float moveSpeed;
     [SerializeField]
-    private bool isMoving;
 
     private SpriteRenderer spriteRenderer;
     public Sprite[] sprite = new Sprite[4]; // < v ^ >
@@ -26,11 +25,11 @@ public class Player : MonoBehaviour
     void Start()
     {
         moveSpeed = 5;
-        rb = GetComponent<Rigidbody2D>();
+        rb = gameObject.GetComponent<Rigidbody2D>();
 
         arrowNum = 3;
         lastShoot = Time.time;
-        spriteRenderer = gameObject.GetComponentInParent<SpriteRenderer>();
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -47,9 +46,6 @@ public class Player : MonoBehaviour
                 spriteRenderer.sprite = (y > 0) ? sprite[2] : sprite[1];
             else
                 spriteRenderer.sprite = (x > 0) ? sprite[3] : sprite[0];
-
-        // animation
-        isMoving = (x != 0 || y != 0);        
 
         // mouse
         Vector3 mousePos = Input.mousePosition;

@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class CatGuard : Guard
 {
@@ -33,15 +35,13 @@ public class CatGuard : Guard
     {
         base.Start();
         if (!isFixed) NextCursor();
-
         float trans = Mathf.Max(transform.localScale.x, transform.localScale.y);
-        gameObject.GetComponent<DetectPlayer>().setRadius(stats.sRadius/trans, stats.sAngle);
+        gameObject.GetComponentInChildren<DetectPlayer>().setSight(stats.sRadius / trans, stats.sAngle);
     }
 
     // Update is called once per frame
     void Update()
     {
-
         if (isAngry)
         {
             dest = chasing.transform.position;
@@ -108,12 +108,14 @@ public class CatGuard : Guard
         isRotating = false;
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        Handles.color = arcColor;
+        Handles.color = new Color(1f, 1f, 0f, 0.1f);
         Handles.DrawSolidArc(transform.position, Vector3.forward, transform.up, stats.sAngle / 2, stats.sRadius);
         Handles.DrawSolidArc(transform.position, Vector3.forward, transform.up, -stats.sAngle / 2, stats.sRadius);
     }
+#endif
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
